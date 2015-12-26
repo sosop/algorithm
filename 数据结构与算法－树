@@ -1,0 +1,101 @@
+## 一、树的介绍
+* 度：结点拥有的子数的数目；树的度是树内结点的度的最大树。
+* 深度：树中结点的最大层次。
+## 二、树的存储结构
+* 双亲表示法：每个结点中有个指向双亲的指针；
+* 孩子表示法：每个结点拥有多个指针域，每个指针域都指向子数；多重链表表示法；为了节约空间，需要记录每个结点的度，链表存放孩子结点指针；数组存结点，链表指向孩子结点指针；
+* 孩子兄弟表示法：两个指针，一个指向第一个孩子结点，另一个指向右边的兄弟；
+## 三、二叉树
+* 特点：最多2棵子数，度小于等于2；左子数和右子数顺序不能变；
+* 特殊二叉树：斜树、满二叉树、完全二叉树；
+* 性质：i层上最多2^(i-1)结点；深度为k的二叉树至多有2^(k-1);叶子结点的数目等于度为2的结点数加1；n个结点的二叉树的深度log2^n + 1；
+## 四、二叉树的存储结构
+### 1、顺序存储：一般只适用于完全二叉树
+### 2、二叉链表：二叉树最多2个结点，所有有2个指针，1个数据；
+### 3、遍历二叉树：从根结点出发，按照某种次序依次访问所有结点，使得每个结点有且仅被访问1次；
+#### 1）、前序：根结点->左子树->右子树
+#### 2）、中序：左子树->根结点->右子树
+#### 3）、后序：左子树->右子树->根结点
+#### 4）、层序：逐层访问
+### 五、二叉树的建立
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+var nodes = [15]string{"A", "B", "C", "", "", "D", "", "", "E", "F", "", "", "G", "", ""}
+
+type Node struct {
+	data   interface{}
+	lChild *Node
+	rChild *Node
+}
+
+type Tree *Node
+
+var index int = -1
+
+var tree Tree
+
+func createTree(tree Tree) Tree {
+	index++
+	data := nodes[index]
+	if data == "" {
+		tree = nil
+	} else {
+		tree = &Node{}
+		tree.data = data
+		tree.lChild = createTree(tree.lChild)
+		tree.rChild = createTree(tree.rChild)
+	}
+	return tree
+}
+
+func init() {
+	tree = createTree(tree)
+}
+
+// 前序遍历
+func PreTraverse(tree Tree) {
+	if tree != nil {
+		fmt.Print(tree.data)
+		PreTraverse(tree.lChild)
+		PreTraverse(tree.rChild)
+	}
+}
+
+// 中序遍历
+func MidTraverse(tree Tree) {
+	if nil != tree {
+		MidTraverse(tree.lChild)
+		fmt.Print(tree.data)
+		MidTraverse(tree.rChild)
+	}
+}
+
+// 后序遍历
+func PostTraverse(tree Tree) {
+	if nil != tree {
+		PostTraverse(tree.lChild)
+		PostTraverse(tree.rChild)
+		fmt.Print(tree.data)
+
+	}
+}
+
+func main() {
+	PreTraverse(tree)
+	fmt.Println()
+	MidTraverse(tree)
+	fmt.Println()
+	PostTraverse(tree)
+	fmt.Println()
+}
+```
+
+
+
+
